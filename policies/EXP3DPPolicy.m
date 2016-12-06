@@ -6,7 +6,6 @@ classdef EXP3DPPolicy < Policy
         %Member variables
         nSites
         weights
-        lastAction
         round
         siteDists
         game
@@ -34,10 +33,10 @@ classdef EXP3DPPolicy < Policy
             if site == 0
                 norm_wts = ones(1,self.nSites)/self.nSites;
             else
-                norm_wts = self.weights(site,:) ./ sum(self.weights(site,:));
+                norm_wts = self.weights(site,:)/sum(self.weights(site,:));
             end
             action_vect = mnrnd(1,norm_wts);
-            [~,action] = max(action_vect);
+            [~,action] = find(action_vect,1);
 %             self.lastAction = action;
         end
         
@@ -45,7 +44,7 @@ classdef EXP3DPPolicy < Policy
             if prevsite == 0
                 return
             end
-            norm_wts = self.weights(prevsite,:) ./ sum(self.weights(prevsite,:));        
+            norm_wts = self.weights(prevsite,:)/sum(self.weights(prevsite,:));        
 
             assert (reward <= 1 && reward >=0);
             lossScalar = 1-reward;
@@ -61,4 +60,3 @@ classdef EXP3DPPolicy < Policy
     end
     
 end
-
